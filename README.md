@@ -1,9 +1,16 @@
 Description
 ===========
 
-The goal is to provide simple scripts to install a Debian in qemu image
+The goal is to provide simple scripts to install an amd64 Debian buster in qemu image
 from an install with PXE and a preseed.
 
+Dependencies
+============
+
+
+```
+$ apt install qemu-utils qemu-system-x86 qemu-kvm curl python
+```
 
 Technical
 =========
