@@ -9,7 +9,7 @@ Dependencies
 
 
 ```
-$ apt install qemu-utils qemu-system-x86 qemu-kvm curl python
+$ apt install qemu-utils qemu-system-x86 qemu-kvm curl python3
 ```
 
 Technical
