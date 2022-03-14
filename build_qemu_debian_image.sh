@@ -49,12 +49,12 @@ EOF
 popd
 
 echo "Creating disk image for Debian $DISTRO x86_64..."
-qemu-img create -f qcow2 ../debian.qcow 10G
+qemu-img create -f qcow2 ../debian-$DISTRO.qcow 10G
 
 VMNAME="$DISTRO"vm
 echo "Running Debian Installer..."
 qemu-system-x86_64 \
-	-hda ../debian.qcow \
+	-hda ../debian-$DISTRO.qcow \
 	-netdev user,id=net0,net=10.0.2.0/24,hostname=$VMNAME,domainname=localdomain,tftp=tftpserver,bootfile=/pxelinux.0 \
 	-device e1000,netdev=net0,mac=52:54:98:76:54:32 \
 	-boot once=n \
