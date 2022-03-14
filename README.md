@@ -23,7 +23,7 @@ Technical
 1. Boot using the qemu image, pxe and preseed
 
 
-`boot.sh` will boot on the newly created image.
+`boot.sh <distro_name>` will boot on the newly created image.
 
 To use a different version of Debian, update the `preseed.cfg` configuration:
 ```
