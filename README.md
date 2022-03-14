@@ -1,8 +1,8 @@
 Description
 ===========
 
-The goal is to provide simple scripts to install an amd64 Debian buster in qemu image
-from an install with PXE and a preseed.
+The goal is to provide simple scripts to install an amd64 Debian installation (default: buster)
+in qemu image from an install with PXE and a preseed.
 
 Dependencies
 ============
@@ -15,7 +15,7 @@ $ apt install qemu-utils qemu-system-x86 qemu-kvm curl python3
 Technical
 =========
 
-1. The `build_qemu_debian_image.sh` script will create a temporary directory and generate password
+1. The `build_qemu_debian_image.sh <distro_name>` script will create a temporary directory and generate password
 1. Create a Simple webserver to serve the `preseed.cfg` file (not need to tftp)
 1. Download `netboot.tar.gz` from Debian repo
 1. Create the pxe configuration

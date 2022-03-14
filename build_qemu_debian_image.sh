@@ -1,5 +1,10 @@
 #!/bin/bash -e
 
+DISTRO=buster
+if test $# -eq 1; then
+    DISTRO=$1
+fi
+
 TEMP="$(mktemp -d build.XXXXX)"
 cp preseed.cfg $TEMP
 pushd $TEMP
@@ -24,9 +29,9 @@ PYTHON_PID=$(sh -c 'echo $$ ; exec >/dev/null 2>&1 ; exec python3 -m http.server
 echo "Running netcat to capture syslogs..."
 NC_PID=$(sh -c 'echo $$ ; exec > ../installer.log 2>&1 ; exec nc -ul 10514' &)
 
-echo "Downloading Debian Buster x86_64 netboot installer..."
+echo "Downloading Debian $DISTRO x86_64 netboot installer..."
 if ! test -f ../netboot.tar.gz; then
-    curl --location --output ../netboot.tar.gz https://deb.debian.org/debian/dists/buster/main/installer-amd64/current/images/netboot/netboot.tar.gz
+    curl --location --output ../netboot.tar.gz https://deb.debian.org/debian/dists/$DISTRO/main/installer-amd64/current/images/netboot/netboot.tar.gz
 fi
 mkdir -p tftpserver
 pushd tftpserver
@@ -43,13 +48,14 @@ append initrd=debian-installer/amd64/initrd.gz auto=true priority=critical passw
 EOF
 popd
 
-echo "Creating disk image for Debian Buster x86_64..."
+echo "Creating disk image for Debian $DISTRO x86_64..."
 qemu-img create -f qcow2 ../debian.qcow 10G
 
+VMNAME="$DISTRO"vm
 echo "Running Debian Installer..."
 qemu-system-x86_64 \
 	-hda ../debian.qcow \
-	-netdev user,id=net0,net=10.0.2.0/24,hostname=bustervm,domainname=localdomain,tftp=tftpserver,bootfile=/pxelinux.0 \
+	-netdev user,id=net0,net=10.0.2.0/24,hostname=$VMNAME,domainname=localdomain,tftp=tftpserver,bootfile=/pxelinux.0 \
 	-device e1000,netdev=net0,mac=52:54:98:76:54:32 \
 	-boot once=n \
 	-m 2048 \
